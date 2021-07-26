@@ -9,6 +9,10 @@ Should the iterable be the first parameter or the last parameter?
 const mapper = map.bind(null, x => x);
 ```
 
+## Project setup
+
+* I’m using this tool to convert the async code to sync code: https://github.com/rauschma/async-off
+
 ## FAQ
 
 ### Why export an object?
