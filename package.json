@@ -1,0 +1,39 @@
+{
+  "name": "@rauschma/iterable",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "exports": {
+    "./sync": "./dist/sync.js",
+    "./async": "./dist/async.js"
+  },
+  "typesVersions": {
+    "*": {
+      "sync": [
+        "dist/sync.d.ts"
+      ],
+      "async": [
+        "dist/async.d.ts"
+      ]
+    }
+  },
+  "scripts": {
+    "dry": "npm publish --dry-run",
+    "prepublishOnly": "npm run clean && npm run build",
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "clean": "rm -rf ./dist",
+    "test": "mocha --ui qunit",
+    "testall": "mocha --ui qunit './dist/test/**/*_test.js'"
+  },
+  "keywords": ["javascript", "typescript"],
+  "author": "Axel Rauschmayer",
+  "license": "MIT",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@types/mocha": "^9.0.0",
+    "@types/node": "^16.4.1",
+    "mocha": "^9.0.2"
+  }
+}
