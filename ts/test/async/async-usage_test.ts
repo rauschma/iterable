@@ -80,31 +80,44 @@ test('Using asIndexedPairs()', async () => {
 });
 
 test('Using reduce()', async () => {
-  assert.deepEqual(
-    await reduce((acc, elem) => acc + elem, fi(['a', 'b', 'c'])),
-    'abc'
-  );
-  assert.deepEqual(
-    await reduce((acc, elem) => acc + elem, fi(['a'])),
-    'a'
+
+  //----- Has no initialValue
+
+  await assert.rejects(
+    async () => reduce((acc, item) => acc + item, fi(new Array<string>())),
+    TypeError
   );
 
   assert.deepEqual(
-    await reduce((acc, elem) => acc + elem, fi(new Array<string>())),
+    await reduce((acc, item) => acc + item, fi(new Array<string>())),
     undefined
   );
+
   assert.deepEqual(
-    await reduce((acc, elem) => acc + elem, 'x', fi(new Array<string>())),
+    await reduce((acc, item) => acc + item, fi(['a'])),
+    'a'
+  );
+  
+  assert.deepEqual(
+    await reduce((acc, item) => acc + item, fi(['a', 'b', 'c'])),
+    'abc'
+  );
+
+  //----- Has initialValue
+
+  assert.deepEqual(
+    await reduce((acc, item) => acc + item, 'x', fi(new Array<string>())),
     'x'
   );
 
   assert.deepEqual(
-    await reduce((acc, elem) => acc + elem, 'x', fi(['a', 'b', 'c'])),
-    'xabc'
+    await reduce((acc, item) => acc + item, 'x', fi(['a'])),
+    'xa'
   );
+
   assert.deepEqual(
-    await reduce((acc, elem) => acc + elem, fi([0, 1, 2])),
-    3
+    await reduce((acc, item) => acc + item, 'x', fi(['a', 'b', 'c'])),
+    'xabc'
   );
 });
 
@@ -172,6 +185,9 @@ test('Using zip()', async () => {
 
 //<async-off-config>
 // {
+//   "renameVariable": {
+//     "assert.rejects": "assert.throws"
+//   },
 //   "unwrapFunctionCall": [
 //     "fi"
 //   ]

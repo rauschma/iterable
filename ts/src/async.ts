@@ -52,10 +52,27 @@ async function* asIndexedPairs<Item>(iterable: AsyncOrSyncIterable<Item>): Async
 
 const NO_INITIAL_VALUE = Symbol('NO_INITIAL_VALUE');
 
-type ThreeArgs<In, Out> = [reducer: (acc: Out, elem: In) => Out, initialValue: Out, iterable: AsyncOrSyncIterable<In>];
-type TwoArgs<InOut> = [reducer: (acc: InOut, elem: InOut) => InOut, iterable: AsyncOrSyncIterable<InOut>];
-function reduce<In, Out>(...args: ThreeArgs<In, Out>): Promise<Out>;
-function reduce<InOut>(...args: TwoArgs<InOut>): Promise<InOut>;
+type ThreeArgs<In, Out> = [reducer: (acc: Out, item: In) => Out, initialValue: Out, iterable: AsyncOrSyncIterable<In>];
+type TwoArgs<InOut> = [reducer: (acc: InOut, item: InOut) => InOut, iterable: AsyncOrSyncIterable<InOut>];
+
+/**
+ * Feeds all items of `iterable` to `reducer()` which folds them into `acc`.
+ * The last `acc` returned by `reducer()` is the result of this function.
+ * ```ts
+ * assert.deepEqual(
+ *   reduce((acc, item) => acc + item, ['a', 'b', 'c']),
+ *   'abc'
+ * );
+ * assert.deepEqual(
+ *   reduce((acc, item) => acc + item, 'x', ['a', 'b', 'c']),
+ *   'xabc'
+ * );
+ * ```
+ * @param initialValue The first value of `acc`. If it is missing, the first item of `iterable` is used, instead.
+ * @throws TypeError If `iterable` is empty and no `initialValue` is provided.
+ */
+function reduce<In, Out>(reducer: (acc: Out, item: In) => Out, initialValue: Out, iterable: AsyncOrSyncIterable<In>): Promise<Out>;
+function reduce<InOut>(reducer: (acc: InOut, item: InOut) => InOut, iterable: AsyncOrSyncIterable<InOut>): Promise<InOut>;
 async function reduce<In, Out>(...args: ThreeArgs<In, Out> | TwoArgs<In>): Promise<any> {
   let reducer, initialValue, iterable;
   if (args.length === 3) {
@@ -65,6 +82,8 @@ async function reduce<In, Out>(...args: ThreeArgs<In, Out> | TwoArgs<In>): Promi
     initialValue = NO_INITIAL_VALUE;
   }
 
+  // The sentinel value NO_INITIAL_VALUE means we can use for-await-of
+  // and don’t have to handle abrupt termination ourselves.
   let accumulator: any  = initialValue;
   for await (const value of iterable) {
     if (accumulator === NO_INITIAL_VALUE) {
@@ -74,7 +93,7 @@ async function reduce<In, Out>(...args: ThreeArgs<In, Out> | TwoArgs<In>): Promi
     accumulator = reducer(accumulator, value);
   }
   if (accumulator === NO_INITIAL_VALUE) {
-    return undefined;
+    throw new TypeError('Must specify an initialValue if the iterable is empty.');
   }
   return accumulator;
 }
@@ -122,7 +141,7 @@ async function some<Item>(pred: (item: Item) => boolean, iterable: AsyncOrSyncIt
 }
 
 /**
- * `T` must include `unknown` somewhere, so that the Array stays mixed (heterogeneous).
+ * `T` must include `unknown` somewhere, so that the Array stays mixed (heterogeneous). The 1-ary tuple in the type union is also required to ensure tuple-ness.
  */
 type MixedArray<Elem> = Array<Elem> | [Elem];
 

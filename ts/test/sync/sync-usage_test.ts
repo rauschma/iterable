@@ -72,31 +72,44 @@ test('Using asIndexedPairs()', () => {
 });
 
 test('Using reduce()', () => {
+
+  //----- Has no initialValue
+
+  assert.throws(
+        () => reduce((acc, item) => acc + item, new Array<string>()),
+        TypeError
+      );
+
   assert.deepEqual(
-    reduce((acc, elem) => acc + elem, ['a', 'b', 'c']),
-    'abc'
-  );
-  assert.deepEqual(
-    reduce((acc, elem) => acc + elem, ['a']),
-    'a'
+    reduce((acc, item) => acc + item, new Array<string>()),
+    undefined
   );
 
   assert.deepEqual(
-    reduce((acc, elem) => acc + elem, new Array<string>()),
-    undefined
+    reduce((acc, item) => acc + item, ['a']),
+    'a'
   );
+  
   assert.deepEqual(
-    reduce((acc, elem) => acc + elem, 'x', new Array<string>()),
+    reduce((acc, item) => acc + item, ['a', 'b', 'c']),
+    'abc'
+  );
+
+  //----- Has initialValue
+
+  assert.deepEqual(
+    reduce((acc, item) => acc + item, 'x', new Array<string>()),
     'x'
   );
 
   assert.deepEqual(
-    reduce((acc, elem) => acc + elem, 'x', ['a', 'b', 'c']),
-    'xabc'
+    reduce((acc, item) => acc + item, 'x', ['a']),
+    'xa'
   );
+
   assert.deepEqual(
-    reduce((acc, elem) => acc + elem, [0, 1, 2]),
-    3
+    reduce((acc, item) => acc + item, 'x', ['a', 'b', 'c']),
+    'xabc'
   );
 });
 
@@ -160,3 +173,6 @@ test('Using zip()', () => {
     [ ['a', 0], ['b', 1] ]    
   );
 });
+
+
+
