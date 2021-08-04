@@ -20,6 +20,10 @@ test('Using map()', async () => {
     await toArray(AsyncIterable.map(x => x + x, fi(['a', 'b', 'c']))),
     ['aa', 'bb', 'cc']
   );
+  assert.deepEqual(
+    await toArray(AsyncIterable.map(x => x + x, fi([]))),
+    []
+  );
 });
 
 test('Using filter()', async () => {
@@ -27,12 +31,28 @@ test('Using filter()', async () => {
     await toArray(AsyncIterable.filter(x => x < 0, fi([-1, 3, -4, 8]))),
     [-1, -4]
   );
+  assert.deepEqual(
+    await toArray(AsyncIterable.filter(x => true, fi([-1, 3, -4, 8]))),
+    [-1, 3, -4, 8]
+  );
+  assert.deepEqual(
+    await toArray(AsyncIterable.filter(x => false, fi([-1, 3, -4, 8]))),
+    []
+  );
+  assert.deepEqual(
+    await toArray(AsyncIterable.filter(x => true, fi([]))),
+    []
+  );
 });
 
 test('Using flatMap()', async () => {
   assert.deepEqual(
     await toArray(AsyncIterable.flatMap(x => x, fi(['a', 'b', 'c']))),
     ['a', 'b', 'c']
+  );
+  assert.deepEqual(
+    await toArray(AsyncIterable.flatMap(x => [], fi(['a', 'b', 'c']))),
+    []
   );
   assert.deepEqual(
     await toArray(AsyncIterable.flatMap(x => [x], fi(['a', 'b', 'c']))),
@@ -45,6 +65,16 @@ test('Using flatMap()', async () => {
   assert.deepEqual(
     await toArray(AsyncIterable.flatMap(x => [x, x, x], fi(['a', 'b', 'c']))),
     ['a', 'a', 'a', 'b', 'b', 'b', 'c', 'c', 'c']
+  );
+  
+  assert.deepEqual(
+    await toArray(
+      AsyncIterable.flatMap(
+        (str) => str.split(/\s/),
+        fi(['multiple strings', 'with', 'multiple words'])
+      )
+    ),
+    ['multiple', 'strings', 'with', 'multiple', 'words']
   );
 
   assert.deepEqual(
@@ -63,6 +93,10 @@ test('Using take()', async () => {
     await toArray(AsyncIterable.take(2, fi(['a', 'b', 'c']))),
     ['a', 'b']
   );
+  assert.deepEqual(
+    await toArray(AsyncIterable.take(3, fi([]))),
+    []
+  );
 });
 
 test('Using drop()', async () => {
@@ -70,12 +104,20 @@ test('Using drop()', async () => {
     await toArray(AsyncIterable.drop(1, fi(['a', 'b', 'c']))),
     ['b', 'c']
   );
+  assert.deepEqual(
+    await toArray(AsyncIterable.drop(3, fi([]))),
+    []
+  );
 });
 
 test('Using asIndexedPairs()', async () => {
   assert.deepEqual(
     await toArray(AsyncIterable.asIndexedPairs(fi(['a', 'b', 'c']))),
     [[0, 'a'], [1, 'b'], [2, 'c']]
+  );
+  assert.deepEqual(
+    await toArray(AsyncIterable.asIndexedPairs(fi([]))),
+    []
   );
 });
 
@@ -117,12 +159,19 @@ test('Using reduce()', async () => {
 });
 
 test('Using forEach()', async () => {
-  const result = new Array<string>();
-  await AsyncIterable.forEach(x => result.push(x + x), fi(['a', 'b', 'c']))
-  assert.deepEqual(
-    result,
-    ['aa', 'bb', 'cc']
-  );
+  {
+    const result = new Array<string>();
+    await AsyncIterable.forEach(x => result.push(x + x), fi(['a', 'b', 'c']))
+    assert.deepEqual(
+      result,
+      ['aa', 'bb', 'cc']
+    );
+  }
+  {
+    let wasInvoked = false
+    await AsyncIterable.forEach(_ => wasInvoked=true, fi([]))
+    assert.equal(wasInvoked, false);
+  }
 });
 
 test('Using some()', async () => {
@@ -137,6 +186,16 @@ test('Using some()', async () => {
   assert.equal(
     await AsyncIterable.some((item) => item < -3, fi([5, -3, 12])),
     false
+  );
+
+  assert.equal(
+    await AsyncIterable.some((_item) => true, fi([])),
+    false
+  );
+
+  assert.equal(
+    await AsyncIterable.some((item) => item > 10, fi(naturalNumbers())),
+    true
   );
 });
 
@@ -153,6 +212,16 @@ test('Using every()', async () => {
     await AsyncIterable.every((item) => item >= -3, fi([5, -3, 12])),
     true
   );
+
+  assert.equal(
+    await AsyncIterable.every((_item) => false, fi([])),
+    true
+  );
+
+  assert.equal(
+    await AsyncIterable.every((item) => item <= 10, fi(naturalNumbers())),
+    false
+  );
 });
 
 test('Using find()', async () => {
@@ -164,6 +233,16 @@ test('Using find()', async () => {
     await AsyncIterable.find((item) => item < 0, fi([5, -3, 12, -8])),
     -3
   );
+
+  assert.equal(
+    await AsyncIterable.find((_item) => true, fi([])),
+    undefined
+  );
+
+  assert.equal(
+    await AsyncIterable.find((item) => item > 20, fi(naturalNumbers())),
+    21
+  );
 });
 
 test('Using zip()', async () => {
@@ -172,8 +251,17 @@ test('Using zip()', async () => {
     [ {first: 'a', second: 0}, {first: 'b', second: 1} ]
   );
   assert.deepEqual(
+    await toArray(AsyncIterable.zip({first: fi([]), second: fi([]) })),
+    []
+  );
+
+  assert.deepEqual(
     await toArray(AsyncIterable.zip([ fi(['a', 'b']), fi([0, 1, 2]) ])),
-    [ ['a', 0], ['b', 1] ]    
+    [ ['a', 0], ['b', 1] ]
+  );
+  assert.deepEqual(
+    await toArray(AsyncIterable.zip([ fi([]), fi([]) ])),
+    []
   );
 });
 

@@ -12,6 +12,10 @@ test('Using map()', () => {
     toArray(Iterable.map(x => x + x, ['a', 'b', 'c'])),
     ['aa', 'bb', 'cc']
   );
+  assert.deepEqual(
+    toArray(Iterable.map(x => x + x, [])),
+    []
+  );
 });
 
 test('Using filter()', () => {
@@ -19,12 +23,28 @@ test('Using filter()', () => {
     toArray(Iterable.filter(x => x < 0, [-1, 3, -4, 8])),
     [-1, -4]
   );
+  assert.deepEqual(
+    toArray(Iterable.filter(x => true, [-1, 3, -4, 8])),
+    [-1, 3, -4, 8]
+  );
+  assert.deepEqual(
+    toArray(Iterable.filter(x => false, [-1, 3, -4, 8])),
+    []
+  );
+  assert.deepEqual(
+    toArray(Iterable.filter(x => true, [])),
+    []
+  );
 });
 
 test('Using flatMap()', () => {
   assert.deepEqual(
     toArray(Iterable.flatMap(x => x, ['a', 'b', 'c'])),
     ['a', 'b', 'c']
+  );
+  assert.deepEqual(
+    toArray(Iterable.flatMap(x => [], ['a', 'b', 'c'])),
+    []
   );
   assert.deepEqual(
     toArray(Iterable.flatMap(x => [x], ['a', 'b', 'c'])),
@@ -37,6 +57,16 @@ test('Using flatMap()', () => {
   assert.deepEqual(
     toArray(Iterable.flatMap(x => [x, x, x], ['a', 'b', 'c'])),
     ['a', 'a', 'a', 'b', 'b', 'b', 'c', 'c', 'c']
+  );
+  
+  assert.deepEqual(
+    toArray(
+            Iterable.flatMap(
+              (str) => str.split(/\s/),
+              ['multiple strings', 'with', 'multiple words']
+            )
+          ),
+    ['multiple', 'strings', 'with', 'multiple', 'words']
   );
 
   assert.deepEqual(
@@ -55,6 +85,10 @@ test('Using take()', () => {
     toArray(Iterable.take(2, ['a', 'b', 'c'])),
     ['a', 'b']
   );
+  assert.deepEqual(
+    toArray(Iterable.take(3, [])),
+    []
+  );
 });
 
 test('Using drop()', () => {
@@ -62,12 +96,20 @@ test('Using drop()', () => {
     toArray(Iterable.drop(1, ['a', 'b', 'c'])),
     ['b', 'c']
   );
+  assert.deepEqual(
+    toArray(Iterable.drop(3, [])),
+    []
+  );
 });
 
 test('Using asIndexedPairs()', () => {
   assert.deepEqual(
     toArray(Iterable.asIndexedPairs(['a', 'b', 'c'])),
     [[0, 'a'], [1, 'b'], [2, 'c']]
+  );
+  assert.deepEqual(
+    toArray(Iterable.asIndexedPairs([])),
+    []
   );
 });
 
@@ -109,12 +151,19 @@ test('Using reduce()', () => {
 });
 
 test('Using forEach()', () => {
-  const result = new Array<string>();
-  Iterable.forEach(x => result.push(x + x), ['a', 'b', 'c'])
-  assert.deepEqual(
-    result,
-    ['aa', 'bb', 'cc']
-  );
+  {
+    const result = new Array<string>();
+    Iterable.forEach(x => result.push(x + x), ['a', 'b', 'c'])
+    assert.deepEqual(
+      result,
+      ['aa', 'bb', 'cc']
+    );
+  }
+  {
+    let wasInvoked = false
+    Iterable.forEach(_ => wasInvoked=true, [])
+    assert.equal(wasInvoked, false);
+  }
 });
 
 test('Using some()', () => {
@@ -129,6 +178,16 @@ test('Using some()', () => {
   assert.equal(
     Iterable.some((item) => item < -3, [5, -3, 12]),
     false
+  );
+
+  assert.equal(
+    Iterable.some((_item) => true, []),
+    false
+  );
+
+  assert.equal(
+    Iterable.some((item) => item > 10, naturalNumbers()),
+    true
   );
 });
 
@@ -145,6 +204,16 @@ test('Using every()', () => {
     Iterable.every((item) => item >= -3, [5, -3, 12]),
     true
   );
+
+  assert.equal(
+    Iterable.every((_item) => false, []),
+    true
+  );
+
+  assert.equal(
+    Iterable.every((item) => item <= 10, naturalNumbers()),
+    false
+  );
 });
 
 test('Using find()', () => {
@@ -156,6 +225,16 @@ test('Using find()', () => {
     Iterable.find((item) => item < 0, [5, -3, 12, -8]),
     -3
   );
+
+  assert.equal(
+    Iterable.find((_item) => true, []),
+    undefined
+  );
+
+  assert.equal(
+    Iterable.find((item) => item > 20, naturalNumbers()),
+    21
+  );
 });
 
 test('Using zip()', () => {
@@ -164,8 +243,17 @@ test('Using zip()', () => {
     [ {first: 'a', second: 0}, {first: 'b', second: 1} ]
   );
   assert.deepEqual(
+    toArray(Iterable.zip({first: [], second: [] })),
+    []
+  );
+
+  assert.deepEqual(
     toArray(Iterable.zip([ ['a', 'b'], [0, 1, 2] ])),
-    [ ['a', 0], ['b', 1] ]    
+    [ ['a', 0], ['b', 1] ]
+  );
+  assert.deepEqual(
+    toArray(Iterable.zip([ [], [] ])),
+    []
   );
 });
 
