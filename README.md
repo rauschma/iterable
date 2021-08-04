@@ -1,19 +1,46 @@
+---
+title: "Helper functions for Iterables and AsyncIterables"
+---
+
 # Helper functions for Iterables and AsyncIterables
 
-## Design considerations
+## 1. Installation
 
-Should the iterable be the first parameter or the last parameter?
-
-```js
-['a', 'b'] |> map(x => x, ?)
-const mapper = map.bind(null, x => x);
+```
+npm install @rauschma/iterable
 ```
 
-## Project setup
+Usage from JavaScript and TypeScript:
 
-* I’m using this tool to convert the async code to sync code: https://github.com/rauschma/async-off
+```ts
+// Synchronous API
+import { Iterable } from '@rauschma/iterable/sync';
+assert.deepEqual(
+  Iterable.toArray(
+    Iterable.map(x => x + x, ['a', 'b', 'c'])),
+  ['aa', 'bb', 'cc']
+);
 
-## FAQ
+// Asynchronous API
+import { AsyncIterable } from '@rauschma/iterable/async';
+  const fi = AsyncIterable.fromIterable;
+  assert.deepEqual(
+    await AsyncIterable.toArray(
+      AsyncIterable.map(x => x + x, fi(['a', 'b', 'c']))),
+    ['aa', 'bb', 'cc']
+  );
+```
+
+## 2. Documentation
+
+* [API documentation](http://rauschma.github.io/iterable/api/index.html) <span style="font-size: x-small">([local](api/index.html))</span>
+* Unit tests: [sync](tree/main/ts/test/sync), [async](tree/main/ts/test/async)
+
+## 3. Project setup
+
+* I’m using the npm package [async-off](https://github.com/rauschma/async-off) to convert the async code to sync code.
+
+## 4. FAQ
 
 ### Why export an object?
 
@@ -21,3 +48,26 @@ This prototypes what having two global built-in JavaScript namespace objects wou
 
 * `Iterable` with `Iterable.map()` etc.
 * `AsyncIterable` with `AsyncIterable.map()` etc.
+
+### Why are iterables always trailing parameters?
+
+If they are last, it’s easier to use partial application:
+
+```js
+const mapper = Iterable.map.bind(null, x => x);
+```
+
+Note that, should JavaScript ever get a pipe operator, the location of the data parameter wouldn’t matter much there:
+
+```js
+const result = ['a', 'b'] |> Iterable.map(x => x, ?);
+```
+
+### Why aren’t the helper functions curried?
+
+* I like partial application. That’s why all functions in this library have the data as their last parameters.
+* JavaScript and its standard library are not designed for currying and clash with it in multiple ways ([more information](https://2ality.com/2017/11/currying-in-js.html#conflicts)). That’s why the library functions are not curried.
+
+### How were the functions picked?
+
+This work is based on the TC39 proposal [“Iterator helpers”](https://github.com/tc39/proposal-iterator-helpers) by Gus Caplan, Michael Ficarra, Adam Vandolder, Jason Orendorff, Yulia Startsev.
