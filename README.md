@@ -2,7 +2,9 @@
 
 Experimental code: If we had tool functions for Iterables and AsyncIterables in JavaScript’s standard library – what would they look like?
 
-* Related work and foundation of this project: TC39 proposal [“Iterator helpers”](https://github.com/tc39/proposal-iterator-helpers) by Gus Caplan, Michael Ficarra, Adam Vandolder, Jason Orendorff, Yulia Startsev.
+**Warning:** This repository is not in any way endorsed by TC39. It is just my own experiment, but I hope to eventually turn it into a proper proposal.
+
+Related work and foundation of this project: TC39 proposal [“Iterator helpers”](https://github.com/tc39/proposal-iterator-helpers) by Gus Caplan, Michael Ficarra, Adam Vandolder, Jason Orendorff, Yulia Startsev.
 
 ## 1. Installation
 
