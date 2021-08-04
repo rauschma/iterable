@@ -60,11 +60,11 @@ type TwoArgs<InOut> = [reducer: (acc: InOut, item: InOut) => InOut, iterable: As
  * The last `acc` returned by `reducer()` is the result of this function.
  * ```ts
  * assert.deepEqual(
- *   reduce((acc, item) => acc + item, ['a', 'b', 'c']),
+ *   Iterable.reduce((acc, item) => acc + item, ['a', 'b', 'c']),
  *   'abc'
  * );
  * assert.deepEqual(
- *   reduce((acc, item) => acc + item, 'x', ['a', 'b', 'c']),
+ *   Iterable.reduce((acc, item) => acc + item, 'x', ['a', 'b', 'c']),
  *   'xabc'
  * );
  * ```
