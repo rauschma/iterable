@@ -248,8 +248,8 @@
 <li>I’m using the npm package <a href="https://github.com/rauschma/async-off">async-off</a> to convert the async code (and its tests) to sync code.</li>
 </ul>
 <h2 id="faq">4. FAQ</h2>
-<h3 id="why-export-an-object">Why export an object?</h3>
-<p>This prototypes what having two global built-in JavaScript namespace objects would look like:</p>
+<h3 id="why-does-each-module-export-an-object-with-functions-and-not-individual-functions">Why does each module export an object with functions and not individual functions?</h3>
+<p>This prototypes what having two global built-in JavaScript namespace objects would look like (think <code>JSON</code> and <code>Math</code>):</p>
 <ul>
 <li><code>Iterable</code> with <code>Iterable.map()</code> etc.</li>
 <li><code>AsyncIterable</code> with <code>AsyncIterable.map()</code> etc.</li>

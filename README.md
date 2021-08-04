@@ -42,9 +42,9 @@ import { AsyncIterable } from '@rauschma/iterable/async';
 
 ## 4. FAQ
 
-### Why export an object?
+### Why does each module export an object with functions and not individual functions?
 
-This prototypes what having two global built-in JavaScript namespace objects would look like:
+This prototypes what having two global built-in JavaScript namespace objects would look like (think `JSON` and `Math`):
 
 * `Iterable` with `Iterable.map()` etc.
 * `AsyncIterable` with `AsyncIterable.map()` etc.
