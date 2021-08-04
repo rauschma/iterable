@@ -1,5 +1,9 @@
 # Helper functions for Iterables and AsyncIterables
 
+Experimental code: If we had tool functions for Iterables and AsyncIterables in JavaScript’s standard library – what would they look like?
+
+* Related work and foundation of this project: TC39 proposal [“Iterator helpers”](https://github.com/tc39/proposal-iterator-helpers) by Gus Caplan, Michael Ficarra, Adam Vandolder, Jason Orendorff, Yulia Startsev.
+
 ## 1. Installation
 
 ```
@@ -30,7 +34,7 @@ import { AsyncIterable } from '@rauschma/iterable/async';
 ## 2. Documentation
 
 * [API documentation](http://rauschma.github.io/iterable/api/index.html) <span style="font-size: x-small">([local](api/index.html))</span>
-* Unit tests: [sync](tree/main/ts/test/sync), [async](tree/main/ts/test/async)
+* Unit tests: [sync](https://github.com/rauschma/iterable/tree/main/ts/test/sync), [async](https://github.com/rauschma/iterable/tree/main/ts/test/async)
 
 ## 3. Project setup
 
@@ -63,6 +67,10 @@ const result = ['a', 'b'] |> Iterable.map(x => x, ?);
 
 * This API supports partial application: All functions in this library have the data as their last parameters.
 * The library functions are not curried: JavaScript and its standard library are not designed for currying and clash with it in multiple ways ([more information](https://2ality.com/2017/11/currying-in-js.html#conflicts)). That’s why the functions are not curried.
+
+### Isn’t `Iterable.toArray()` the same as `Array.from()`?
+
+Yes, `Array.from()` does what `Iterable.toArray()` does (and more). The latter function only exists because there is `AsyncIterable.toArray()` (which has no current equivalent in JavaScript’s standard library).
 
 ### How were the functions picked?
 

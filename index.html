@@ -215,6 +215,10 @@
 <header id="title-block-header">
 <h1 class="title">Helper functions for Iterables and AsyncIterables</h1>
 </header>
+<p>Experimental code: If we had tool functions for Iterables and AsyncIterables in JavaScript’s standard library – what would they look like?</p>
+<ul>
+<li>Related work and foundation of this project: TC39 proposal <a href="https://github.com/tc39/proposal-iterator-helpers">“Iterator helpers”</a> by Gus Caplan, Michael Ficarra, Adam Vandolder, Jason Orendorff, Yulia Startsev.</li>
+</ul>
 <h2 id="installation">1. Installation</h2>
 <pre><code>npm install @rauschma/iterable</code></pre>
 <p>Usage from JavaScript and TypeScript:</p>
@@ -237,7 +241,7 @@
 <h2 id="documentation">2. Documentation</h2>
 <ul>
 <li><a href="http://rauschma.github.io/iterable/api/index.html">API documentation</a> <span style="font-size: x-small">(<a href="api/index.html">local</a>)</span></li>
-<li>Unit tests: <a href="tree/main/ts/test/sync">sync</a>, <a href="tree/main/ts/test/async">async</a></li>
+<li>Unit tests: <a href="https://github.com/rauschma/iterable/tree/main/ts/test/sync">sync</a>, <a href="https://github.com/rauschma/iterable/tree/main/ts/test/async">async</a></li>
 </ul>
 <h2 id="project-setup">3. Project setup</h2>
 <ul>
@@ -260,6 +264,8 @@
 <li>This API supports partial application: All functions in this library have the data as their last parameters.</li>
 <li>The library functions are not curried: JavaScript and its standard library are not designed for currying and clash with it in multiple ways (<a href="https://2ality.com/2017/11/currying-in-js.html#conflicts">more information</a>). That’s why the functions are not curried.</li>
 </ul>
+<h3 id="isnt-iterable.toarray-the-same-as-array.from">Isn’t <code>Iterable.toArray()</code> the same as <code>Array.from()</code>?</h3>
+<p>Yes, <code>Array.from()</code> does what <code>Iterable.toArray()</code> does (and more). The latter function only exists because there is <code>AsyncIterable.toArray()</code> (which has no current equivalent in JavaScript’s standard library).</p>
 <h3 id="how-were-the-functions-picked">How were the functions picked?</h3>
 <p>This work is based on the TC39 proposal <a href="https://github.com/tc39/proposal-iterator-helpers">“Iterator helpers”</a> by Gus Caplan, Michael Ficarra, Adam Vandolder, Jason Orendorff, Yulia Startsev.</p>
 </body>
