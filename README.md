@@ -1,7 +1,3 @@
----
-title: "Helper functions for Iterables and AsyncIterables"
----
-
 # Helper functions for Iterables and AsyncIterables
 
 ## 1. Installation
@@ -38,7 +34,7 @@ import { AsyncIterable } from '@rauschma/iterable/async';
 
 ## 3. Project setup
 
-* I’m using the npm package [async-off](https://github.com/rauschma/async-off) to convert the async code to sync code.
+* I’m using the npm package [async-off](https://github.com/rauschma/async-off) to convert the async code (and its tests) to sync code.
 
 ## 4. FAQ
 
@@ -65,8 +61,8 @@ const result = ['a', 'b'] |> Iterable.map(x => x, ?);
 
 ### Why aren’t the helper functions curried?
 
-* I like partial application. That’s why all functions in this library have the data as their last parameters.
-* JavaScript and its standard library are not designed for currying and clash with it in multiple ways ([more information](https://2ality.com/2017/11/currying-in-js.html#conflicts)). That’s why the library functions are not curried.
+* This API supports partial application: All functions in this library have the data as their last parameters.
+* The library functions are not curried: JavaScript and its standard library are not designed for currying and clash with it in multiple ways ([more information](https://2ality.com/2017/11/currying-in-js.html#conflicts)). That’s why the functions are not curried.
 
 ### How were the functions picked?
 

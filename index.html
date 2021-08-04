@@ -241,7 +241,7 @@
 </ul>
 <h2 id="project-setup">3. Project setup</h2>
 <ul>
-<li>I’m using the npm package <a href="https://github.com/rauschma/async-off">async-off</a> to convert the async code to sync code.</li>
+<li>I’m using the npm package <a href="https://github.com/rauschma/async-off">async-off</a> to convert the async code (and its tests) to sync code.</li>
 </ul>
 <h2 id="faq">4. FAQ</h2>
 <h3 id="why-export-an-object">Why export an object?</h3>
@@ -257,8 +257,8 @@
 <div class="sourceCode" id="cb4"><pre class="sourceCode js"><code class="sourceCode javascript"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">const</span> result <span class="op">=</span> [<span class="st">&#39;a&#39;</span><span class="op">,</span> <span class="st">&#39;b&#39;</span>] <span class="op">|&gt;</span> Iterable<span class="op">.</span><span class="fu">map</span>(x <span class="kw">=&gt;</span> x<span class="op">,</span> <span class="op">?</span>)<span class="op">;</span></span></code></pre></div>
 <h3 id="why-arent-the-helper-functions-curried">Why aren’t the helper functions curried?</h3>
 <ul>
-<li>I like partial application. That’s why all functions in this library have the data as their last parameters.</li>
-<li>JavaScript and its standard library are not designed for currying and clash with it in multiple ways (<a href="https://2ality.com/2017/11/currying-in-js.html#conflicts">more information</a>). That’s why the library functions are not curried.</li>
+<li>This API supports partial application: All functions in this library have the data as their last parameters.</li>
+<li>The library functions are not curried: JavaScript and its standard library are not designed for currying and clash with it in multiple ways (<a href="https://2ality.com/2017/11/currying-in-js.html#conflicts">more information</a>). That’s why the functions are not curried.</li>
 </ul>
 <h3 id="how-were-the-functions-picked">How were the functions picked?</h3>
 <p>This work is based on the TC39 proposal <a href="https://github.com/tc39/proposal-iterator-helpers">“Iterator helpers”</a> by Gus Caplan, Michael Ficarra, Adam Vandolder, Jason Orendorff, Yulia Startsev.</p>

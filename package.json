@@ -26,7 +26,7 @@
     "test": "mocha --ui qunit",
     "testall": "mocha --ui qunit './dist/test/**/*_test.js'",
     "api": "typedoc --out api --readme none ts/src/async.ts ts/src/sync.ts",
-    "index": "sed '/^# /d' README.md | pandoc --from=markdown --to=html --standalone --number-sections --shift-heading-level-by=-1 > index.html"
+    "index": "sed '/^# /d' README.md | pandoc --from=markdown --to=html --standalone --metadata title='Helper functions for Iterables and AsyncIterables' > index.html"
   },
   "keywords": [
     "javascript",
