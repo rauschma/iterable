@@ -181,9 +181,7 @@ test('Using zip()', async () => {
 //<async-off-config>
 // {
 //   "renameVariable": {
-//     "AsyncIterable": "Iterable"
-//   },
-//   "renameVariable": {
+//     "AsyncIterable": "Iterable",
 //     "assert.rejects": "assert.throws"
 //   },
 //   "unwrapFunctionCall": [
