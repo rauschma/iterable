@@ -1,6 +1,6 @@
 {
   "name": "@rauschma/iterable",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "type": "module",
   "description": "",
   "exports": {
@@ -19,13 +19,13 @@
   },
   "scripts": {
     "dry": "npm publish --dry-run",
-    "prepublishOnly": "npm run clean && npm run build && npx rm -rf api/ && npm run api",
+    "prepublishOnly": "npm run sync && npm run clean && npm run build",
     "build": "tsc",
     "watch": "tsc --watch",
-    "clean": "rm -rf ./dist",
+    "clean": "shx rm -rf ./dist",
     "test": "mocha --ui qunit",
     "testall": "mocha --ui qunit './dist/test/**/*_test.js'",
-    "api": "typedoc --out api --readme none ts/src/async.ts ts/src/sync.ts",
+    "api": "shx rm -rf api/ && typedoc --out api --readme none ts/src/async.ts ts/src/sync.ts",
     "index": "sed '/^# /d' README.md | pandoc --from=markdown --to=html --standalone --metadata title='Helper functions for Iterables and AsyncIterables' > index.html",
     "sync": "npm run syncsrc && npm run synctest",
     "syncsrc": "npx async-off ts/src/async.ts > ts/src/sync.ts",
