@@ -35,7 +35,9 @@ import { AsyncIterable } from '@rauschma/iterable/async';
   );
 ```
 
-If you don’t want to qualify the functions, you can destructure:
+### Tips
+
+We can avoid qualifying (mentioning `Iterable` and `AsyncIterable`) via destructuring:
 
 ```ts
 import { Iterable } from '@rauschma/iterable/sync';
