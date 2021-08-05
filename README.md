@@ -48,6 +48,14 @@ assert.deepEqual(
 );
 ```
 
+Should JavaScript get [a pipeline operator](https://github.com/tc39/proposal-pipeline-operator), we can do:
+
+```ts
+['a', 'b', 'c']
+|> map(x => x + x, ?)
+|> toArray(?)
+```
+
 ## 2. Documentation
 
 * [API documentation](http://rauschma.github.io/iterable/api/index.html) <span style="font-size: x-small">([local](api/index.html))</span>
