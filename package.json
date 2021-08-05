@@ -1,6 +1,6 @@
 {
   "name": "@rauschma/iterable",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "",
   "exports": {
@@ -19,13 +19,13 @@
   },
   "scripts": {
     "dry": "npm publish --dry-run",
-    "prepublishOnly": "npm run clean && npm run build",
+    "prepublishOnly": "npm run clean && npm run build && npx rm -rf api/ && npm run api",
     "build": "tsc",
     "watch": "tsc --watch",
     "clean": "rm -rf ./dist",
     "test": "mocha --ui qunit",
     "testall": "mocha --ui qunit './dist/test/**/*_test.js'",
-    "api": "typedoc --theme minimal --out api --readme none ts/src/async.ts ts/src/sync.ts",
+    "api": "typedoc --out api --readme none ts/src/async.ts ts/src/sync.ts",
     "index": "sed '/^# /d' README.md | pandoc --from=markdown --to=html --standalone --metadata title='Helper functions for Iterables and AsyncIterables' > index.html",
     "sync": "npm run syncsrc && npm run synctest",
     "syncsrc": "npx async-off ts/src/async.ts > ts/src/sync.ts",
@@ -37,12 +37,11 @@
   ],
   "author": "Axel Rauschmayer",
   "license": "MIT",
-  "dependencies": {
-    "typedoc": "^0.21.5"
-  },
   "devDependencies": {
+    "typedoc": "^0.21.5",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.4.1",
-    "mocha": "^9.0.2"
+    "mocha": "^9.0.2",
+    "shx": "^0.3.3"
   }
 }
