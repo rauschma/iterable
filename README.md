@@ -35,6 +35,19 @@ import { AsyncIterable } from '@rauschma/iterable/async';
   );
 ```
 
+If you don’t want to qualify the functions, you can destructure:
+
+```ts
+import { Iterable } from '@rauschma/iterable/sync';
+const {toArray, map} = Iterable;
+
+assert.deepEqual(
+  toArray(
+    map(x => x + x, ['a', 'b', 'c'])),
+  ['aa', 'bb', 'cc']
+);
+```
+
 ## 2. Documentation
 
 * [API documentation](http://rauschma.github.io/iterable/api/index.html) <span style="font-size: x-small">([local](api/index.html))</span>
@@ -52,6 +65,16 @@ This prototypes what having two global built-in JavaScript namespace objects wou
 
 * `Iterable` with `Iterable.map()` etc.
 * `AsyncIterable` with `AsyncIterable.map()` etc.
+
+### Why yet another library for iterables?
+
+The purpose of this package is not to be a library, it is to prototype built-in helpers for (async) iterables.
+
+### How were the functions picked?
+
+This work is based on the TC39 proposal [“Iterator helpers”](https://github.com/tc39/proposal-iterator-helpers) by Gus Caplan, Michael Ficarra, Adam Vandolder, Jason Orendorff, Yulia Startsev.
+
+The one addition I made was `zip()`.
 
 ### Why are iterables always trailing parameters?
 
@@ -75,7 +98,3 @@ const result = ['a', 'b'] |> Iterable.map(x => x, ?);
 ### Isn’t `Iterable.toArray()` the same as `Array.from()`?
 
 Yes, `Array.from()` does what `Iterable.toArray()` does (and more). The latter function only exists because there is `AsyncIterable.toArray()` (which has no current equivalent in JavaScript’s standard library).
-
-### How were the functions picked?
-
-This work is based on the TC39 proposal [“Iterator helpers”](https://github.com/tc39/proposal-iterator-helpers) by Gus Caplan, Michael Ficarra, Adam Vandolder, Jason Orendorff, Yulia Startsev.
